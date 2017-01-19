@@ -6,7 +6,28 @@
 </head>
 <body ng-controller="UnitTestController as vm">
 
-{{vm.hello}}
+<h1>{{vm.title}}</h1>
+
+<section>
+    <form ng-submit="vm.addDestination()">
+        <label>City: <input name="city" type="text" ng-model="vm.newDestination.city"></label>
+        <label>Country: <input name="country" type="text" ng-model="vm.newDestination.country"></label>
+
+        <input type="submit" value="Add">
+    </form>
+</section>
+
+<section>
+    <h2>Your Trip</h2>
+
+    <div ng-repeat="destination in vm.destinations">
+        <span>{{destination.city}}, {{destination.country}}</span>
+        <span ng-if="destination.weather"> - {{destination.weather.main}}, {{destination.weather.temp}}&deg;C</span>
+
+        <button ng-click="vm.removeDestination($index)">Remove</button>
+        <button ng-click="vm.getWeather(destination)">Update Weather</button>
+    </div>
+</section>
 
 <script src="bower_components/angular/angular.min.js"></script>
 <script src="app.js"></script>
