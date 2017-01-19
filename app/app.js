@@ -3,7 +3,8 @@
  */
 
 angular.module('unit-testing', [])
-    .controller('UnitTestController', UnitTestController);
+    .controller('UnitTestController', UnitTestController)
+    .filter('warmestDestinations', WarmestDestinationsFilter);
 
 UnitTestController.$inject = ['$http'];
 function UnitTestController($http) {
@@ -36,12 +37,28 @@ function UnitTestController($http) {
                     destination.weather.main = response.data.weather[0].main;
                     destination.weather.temp = kelvinToCelsius(response.data.main.temp);
                 }
+
+                vm.error = '';
             }, function failure(response) {
-                vm.title += ' - Error fetching weather data. Error: ' + response;
+                vm.error = 'Error fetching weather data for that city.';
             })
     };
 
     function kelvinToCelsius(temp) {
         return Math.round(temp - 273);
+    }
+}
+
+function WarmestDestinationsFilter() {
+    return function (destinations, minTemp) {
+        var warmDestinations = [];
+
+        angular.forEach(destinations, function (destination) {
+            if (destination.weather && destination.weather.temp && destination.weather.temp > minTemp) {
+                warmDestinations.push(destination);
+            }
+        });
+
+        return warmDestinations;
     }
 }

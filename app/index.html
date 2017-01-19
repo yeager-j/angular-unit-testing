@@ -7,6 +7,7 @@
 <body ng-controller="UnitTestController as vm">
 
 <h1>{{vm.title}}</h1>
+<h3>{{vm.error}}</h3>
 
 <section>
     <form ng-submit="vm.addDestination()">
@@ -26,6 +27,14 @@
 
         <button ng-click="vm.removeDestination($index)">Remove</button>
         <button ng-click="vm.getWeather(destination)">Update Weather</button>
+    </div>
+</section>
+
+<section>
+    <h2>Warmest Destinations</h2>
+
+    <div ng-repeat="destination in vm.destinations | warmestDestinations: 10">
+        <span>{{destination.city}}, {{destination.country}}</span>
     </div>
 </section>
 

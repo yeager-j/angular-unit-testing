@@ -89,6 +89,47 @@ describe('Unit Testing', function () {
 
             expect(ctrl.destination.weather.main).toBe('Rain');
             expect(ctrl.destination.weather.temp).toBe(15);
-        })
+        });
+    });
+
+    describe('Filter Testing', function () {
+        it('should return only warm destinations', inject(function ($filter) {
+            var warmest = $filter('warmestDestinations');
+
+            var destinations = [
+                {
+                    city: 'Cairo',
+                    country: 'Egypt',
+                    weather: {
+                        temp: 21
+                    }
+                },
+                {
+                    city: 'Beijing',
+                    country: 'China',
+                    weather: {
+                        temp: 10
+                    }
+                },
+                {
+                    city: 'Moscow',
+                    country: 'Russia',
+                    weather: {
+                        temp: -20
+                    }
+                },
+                {
+                    city: 'Mexico City',
+                    country: 'Mexico'
+                }
+            ];
+
+            expect(destinations.length).toBe(4);
+
+            var warmestDestinations = warmest(destinations, 15);
+
+            expect(warmestDestinations.length).toBe(1);
+            expect(warmestDestinations[0].city).toBe('Cairo');
+        }))
     })
 });
